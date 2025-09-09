@@ -22,3 +22,15 @@ SELECT * FROM flights WHERE aircraft_code = '733'
 -- 5. Escribe una consulta que te muestre la información detallada de los tickets que han comprado las personas que se llaman Irina.
 
 SELECT * FROM tickets WHERE passenger_name LIKE '%IRINA%'
+
+-- 6. Mostrar las ciudades con más de un aeropuerto.
+
+SELECT city->> 'en' AS city, COUNT(*) AS total_airports_by_city FROM airports_data GROUP BY city HAVING COUNT(*)>1  ORDER BY city ASC 
+
+-- 7. Mostrar el número de vuelos por modelo de avión.
+
+SELECT t1.aircraft_code, t2.model ->> 'en' AS model_en, COUNT(*) AS total_flights 
+FROM flights t1 
+JOIN aircrafts_data t2 ON t1.aircraft_code = t2.aircraft_code 
+GROUP BY t1.aircraft_code, t2.model ->> 'en' 
+ORDER BY total_flights DESC
