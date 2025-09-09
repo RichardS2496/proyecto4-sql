@@ -34,3 +34,15 @@ FROM flights t1
 JOIN aircrafts_data t2 ON t1.aircraft_code = t2.aircraft_code 
 GROUP BY t1.aircraft_code, t2.model ->> 'en' 
 ORDER BY total_flights DESC
+
+-- 8. Reservas con más de un billete (varios pasajeros).
+
+SELECT book_ref, COUNT(*) FROM tickets GROUP BY book_ref HAVING COUNT(*)>1
+
+-- 9. Vuelos con retraso de salida superior a una hora.
+
+SELECT flight_id, scheduled_departure, actual_departure, actual_departure - scheduled_departure AS flight_delay 
+FROM flights 
+WHERE actual_departure - scheduled_departure > INTERVAL '1 hours' 
+
+-- No conocia el uso del INTERVAL en el 9 y en el 6 no recordaba como usar el HAVING ni JOIN, tampoco una manera que me mostro GPT para ingresar a datos BSON con los nombres en Ingles
